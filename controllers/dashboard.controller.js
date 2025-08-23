@@ -1,5 +1,6 @@
 import dotenv from "dotenv"
 import { User } from "../models/user.model.js";
+import { successResponse, errorResponse } from "../utils/response.js";
 
 dotenv.config()
 
@@ -8,17 +9,9 @@ export const getData = async (req, res) => {
         // Fetch only emails from User collection
         const users = await User.find({}, "email")
         const emails = users.map(user => user.email)
-        // const 
 
-        return res.json({
-            success: true,
-            message: "Token Generate successful",
-            total: emails.length,
-            data: { ...emails }
-        })
+        return successResponse(res, { emails, total: emails.length }, "User emails fetched successfully")
     } catch (error) {
-        console.error("Error fetching user emails:", error.message)
-        return res.status(500).json({ error: "Failed to fetch user emails" })
+        return errorResponse(res, error.message, 500)
     }
 }
-
