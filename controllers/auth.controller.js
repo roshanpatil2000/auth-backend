@@ -47,6 +47,34 @@ export const signup = async (req, res) => {
     }
 }
 
+export const generateAuth = async (req, res) => {
+    const { email, password } = req.body
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Invalid credentials" })
+        }
+        const isPasswordValid = await bcryptjs.compare(password, user.password)
+        if (!isPasswordValid) {
+            return res.status(400).json({ success: false, message: "Invalid credentials" })
+        }
+
+        const token = generateTokenAndSetCookie(res, user._id);
+
+        console.log("token--->", token),
+            await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Token Generate successful",
+            data: { token }
+        })
+    } catch (error) {
+        console.log('error in login:', error)
+        res.status(500).json({ success: false, message: error.message })
+    }
+
+}
 export const verifyEmail = async (req, res) => {
     const { code } = req.body;
     try {
@@ -95,8 +123,10 @@ export const login = async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid credentials" })
         }
 
-        generateTokenAndSetCookie(res, user._id);
-        user.lastLogin = Date.now();
+        const token = generateTokenAndSetCookie(res, user._id);
+
+        console.log("token--->", token),
+            user.lastLogin = Date.now();
         await user.save();
 
         res.status(200).json({
@@ -104,6 +134,7 @@ export const login = async (req, res) => {
             message: "Login successful",
             user: {
                 ...user._doc,
+                token: token,
                 password: undefined
             }
         })
