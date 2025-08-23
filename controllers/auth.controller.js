@@ -10,7 +10,7 @@ export const signup = async (req, res) => {
     const { email, name, password } = req.body;
     try {
         if (!email || !name || !password) {
-            throw new Error("All fields are required");
+            return res.status(400).json({ success: false, message: "All fields are required" });
         }
 
         const userAlreadyExists = await User.findOne({ email });
@@ -43,7 +43,7 @@ export const signup = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
@@ -79,7 +79,7 @@ export const verifyEmail = async (req, res) => {
             success: false,
             message: 'Something went wrong!'
         })
-
+        return;
     }
 }
 
@@ -88,11 +88,11 @@ export const login = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            res.status(400).json({ success: false, message: "Invalid credentials" })
+            return res.status(400).json({ success: false, message: "Invalid credentials" })
         }
         const isPasswordValid = await bcryptjs.compare(password, user.password)
         if (!isPasswordValid) {
-            res.status(400).json({ success: false, message: "Invalid credentials" })
+            return res.status(400).json({ success: false, message: "Invalid credentials" })
         }
 
         generateTokenAndSetCookie(res, user._id);
@@ -101,7 +101,7 @@ export const login = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Loggin successfull",
+            message: "Login successful",
             user: {
                 ...user._doc,
                 password: undefined
@@ -109,7 +109,7 @@ export const login = async (req, res) => {
         })
     } catch (error) {
         console.log('error in login:', error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -137,7 +137,8 @@ export const forgotPassword = async (req, res) => {
         res.status(200).json({ success: true, message: "Password reset link sent to your email" })
     } catch (error) {
         console.log("Error in forgot password", error)
-        res.status(400).json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
+        return;
     }
 }
 
@@ -147,8 +148,8 @@ export const resetPassword = async (req, res) => {
         const { password } = req.body;
         const user = await User.findOne({ resetPasswordToken: token, resetPasswordExpiresAt: { $gt: Date.now() } })
 
-        if(!user){
-            return res.status(400).json({success:false,message:"Invalid or expired reset token"})
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Invalid or expired reset token" })
         }
 
         // update password
@@ -162,21 +163,21 @@ export const resetPassword = async (req, res) => {
         res.status(200).json({ success: true, message: "password reset successfully" })
     } catch (error) {
         console.log("Error in forgot password", error)
-        res.status(400).json({ success: false, message: error.message })
-
+        res.status(500).json({ success: false, message: error.message })
+        return;
     }
 }
 
-export const checkAuth = async(req,res)=>{
+export const checkAuth = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select("-password");
-        if(!user){
-            return res.status(400).json({success:false,message:"User not found!"})
+        if (!user) {
+            return res.status(400).json({ success: false, message: "User not found!" })
 
         }
-        res.status(200).json({success:true, user})
+        res.status(200).json({ success: true, user })
     } catch (error) {
-        console.log('error in checkAutg', error)
-        res.status(400).json({success:false, message: error.message})
+        console.log('error in checkAuth', error)
+        res.status(500).json({ success: false, message: error.message })
     }
 }

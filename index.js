@@ -48,7 +48,7 @@ app.use("/api/auth", authRoutes);
 
 app.listen(port, () => {
     connectDB();
-    console.log('Server is running on',`http://localhost:${port}`);
+    console.log('Server is running on', `http://localhost:${port}`);
     // console.log('API Documentation available at', `http://localhost:${port}/api-docs`);
 
 });
