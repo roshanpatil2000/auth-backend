@@ -22,6 +22,7 @@ export const signup = async (req, res) => {
 
         const hashedPassword = await bcryptjs.hash(password, 10);
         const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+        // save data in DB
         const user = new User({
             email,
             password: hashedPassword,
@@ -39,7 +40,8 @@ export const signup = async (req, res) => {
         return successResponse(res, {
             user: {
                 ...user._doc,
-                password: undefined
+                password: undefined,
+                verificationToken: undefined
             }
         }, "User created successfully");
     } catch (error) {
