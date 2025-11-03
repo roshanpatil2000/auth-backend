@@ -1,16 +1,22 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from "cors";
 import cookieParser from 'cookie-parser';
+
 import { connectDB } from './db/connectDB.js';
 import authRoutes from './routes/auth.route.js';
 import dashboardRoutes from './routes/dashboard.route.js';
 import logger from './utils/logger.js';
 import requestLogger from './middleware/logger.middleware.js';
 import errorHandler from './middleware/error.middleware.js';
+
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 2904;
 
+
+// app.use(cors({ origin: "http://localhost:3000" }));  // Allow your frontend
+app.use(cors());
 
 app.use(express.json()); // allows us to parse incoming requests with JSON payloads:req.body
 app.use(requestLogger); // Apply logger middleware globally
