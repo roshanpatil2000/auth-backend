@@ -26,7 +26,7 @@ app.use(cookieParser()); //allows us to parse incoming cookies
 
 // Base health check route
 app.get("/", (req, res) => {
-    res.json({ message: "URL Shortener API is running 🚀" });
+    res.json({ message: "CAFÈ API is running 🚀" });
 });
 
 app.use("/api/auth", authRoutes);
