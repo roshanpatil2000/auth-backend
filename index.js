@@ -28,7 +28,7 @@ app.use(cookieParser()); //allows us to parse incoming cookies
 
 // Base health check route
 app.get("/", (req, res) => {
-    res.json({ version: "0.0.1", message: "CAFÈ API is running 🚀" });
+    res.json({ version: "0.0.2", releaseDate: "06-nov-2025", message: "CAFÈ API is running 🚀" });
 });
 
 // routes
