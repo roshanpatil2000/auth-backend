@@ -9,7 +9,7 @@ import { successResponse, errorResponse } from "../utils/response.js";
 
 dotenv.config()
 export const signup = async (req, res) => {
-    const { email, name, password } = req.body;
+    const { email, name, password, role } = req.body;
     try {
         if (!email || !name || !password) {
             return errorResponse(res, "All fields are required", 400);
@@ -27,13 +27,14 @@ export const signup = async (req, res) => {
             email,
             password: hashedPassword,
             name,
+            role: role || "user",
             verificationToken: verificationToken,
             verificationExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
         });
         await user.save();
 
         // jwt token
-        generateTokenAndSetCookie(res, user._id);
+        generateTokenAndSetCookie(res, user._id, user.role, user.email);
         await sendVerficationEmail(user.email, verificationToken);
 
 
@@ -61,7 +62,7 @@ export const generateAuth = async (req, res, next) => {
             return errorResponse(res, "Invalid credentials", 400);
         }
 
-        const data = { token: generateTokenAndSetCookie(res, user._id) }
+        const data = { token: generateTokenAndSetCookie(res, user._id, user.email, user.role) }
 
         await user.save();
 
@@ -112,7 +113,7 @@ export const login = async (req, res) => {
             return errorResponse(res, "Invalid credentials", 400)
         }
 
-        const token = generateTokenAndSetCookie(res, user._id);
+        const token = generateTokenAndSetCookie(res, user._id, user.role, user.email);
 
         user.lastLogin = Date.now();
         await user.save();

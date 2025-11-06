@@ -6,15 +6,17 @@ import cookieParser from 'cookie-parser';
 import { connectDB } from './db/connectDB.js';
 import authRoutes from './routes/auth.route.js';
 import dashboardRoutes from './routes/dashboard.route.js';
+import permissionRoutes from './routes/permissions.route.js';
 import logger from './utils/logger.js';
 import requestLogger from './middleware/logger.middleware.js';
 import errorHandler from './middleware/error.middleware.js';
+
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 2904;
 
-
+// middlewares
 // app.use(cors({ origin: "http://localhost:3000" }));  // Allow your frontend
 app.use(cors());
 
@@ -29,11 +31,10 @@ app.get("/", (req, res) => {
     res.json({ message: "CAFÈ API is running 🚀" });
 });
 
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
-
-
-
+app.use("/api/permissions", permissionRoutes)
 
 
 
