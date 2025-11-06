@@ -10,7 +10,7 @@ export const getData = async (req, res) => {
         const users = await User.find({}, "email")
         const emails = users.map(user => user.email)
 
-        return successResponse(res, { emails, total: emails.length }, "User emails fetched successfully")
+        return successResponse(res, { total: emails.length, emails}, "User emails fetched successfully")
     } catch (error) {
         return errorResponse(res, error.message, 500)
     }
