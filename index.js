@@ -25,6 +25,8 @@ app.use(requestLogger); // Apply logger middleware globally
 app.use(cookieParser()); //allows us to parse incoming cookies
 
 
+app.use(express.static('public'));
+
 
 // Base health check route
 app.get("/", (req, res) => {
