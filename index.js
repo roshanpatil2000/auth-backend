@@ -31,7 +31,7 @@ app.use(express.static('public'));
 
 // Base health check route
 app.get("/", (req, res) => {
-    res.json({ version: "0.0.2", releaseDate: "06-nov-2025", message: "CAFÈ API is running 🚀" });
+    res.json({ version: "0.0.3", releaseDate: "08-nov-2025", message: "CAFÈ API is running 🚀" });
 });
 
 // routes
