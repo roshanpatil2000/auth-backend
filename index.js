@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 
 import { connectDB } from './db/connectDB.js';
 import authRoutes from './routes/auth.route.js';
+import userRoutes from './routes/users.route.js';
 import dashboardRoutes from './routes/dashboard.route.js';
 import permissionRoutes from './routes/permissions.route.js';
 import logger from './utils/logger.js';
@@ -34,8 +35,9 @@ app.get("/", (req, res) => {
 });
 
 // routes
-app.use("/api/auth", authRoutes);
-app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/auth", authRoutes); // auth api's 
+app.use("/api/users", userRoutes) // user management api's
+// app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/permissions", permissionRoutes)
 
 
