@@ -17,9 +17,9 @@ export const adminToken = async (req, res, next) => {
             return res.status(403).json({ success: false, message: "Unathorized- User is not admin!" });
 
 
-        console.log("decoded usr===>", decoded.userId)
-        console.log("decoded usr===>", decoded.role)
-        console.log("decoded email===>", decoded.email)
+        // console.log("decoded usr===>", decoded.userId)
+        // console.log("decoded role===>", decoded.role)
+        // console.log("decoded email===>", decoded.email)
         req.userId = decoded.userId;
         req.role = decoded.role;
         req.email = decoded.email;
