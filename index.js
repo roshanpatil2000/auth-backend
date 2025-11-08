@@ -6,7 +6,9 @@ import cookieParser from 'cookie-parser';
 import { connectDB } from './db/connectDB.js';
 import authRoutes from './routes/auth.route.js';
 import userRoutes from './routes/users.route.js';
-import dashboardRoutes from './routes/dashboard.route.js';
+import categoryRoutes from './routes/category.route.js';
+import menuRoutes from './routes/menu.route.js';
+
 import permissionRoutes from './routes/permissions.route.js';
 import logger from './utils/logger.js';
 import requestLogger from './middleware/logger.middleware.js';
@@ -31,13 +33,16 @@ app.use(express.static('public'));
 
 // Base health check route
 app.get("/", (req, res) => {
-    res.json({ version: "0.0.3", releaseDate: "08-nov-2025", message: "CAFÈ API is running 🚀" });
+    res.json({ version: "0.0.4", releaseDate: "08-nov-2025", message: "CAFÈ API is running 🚀" });
 });
 
 // routes
 app.use("/api/auth", authRoutes); // auth api's 
 app.use("/api/users", userRoutes) // user management api's
-// app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/menu/categories", categoryRoutes) //category related api's
+
+app.use("/api/menu/items", menuRoutes) // menu card related api's
+
 app.use("/api/permissions", permissionRoutes)
 
 
