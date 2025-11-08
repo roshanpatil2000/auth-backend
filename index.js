@@ -39,9 +39,10 @@ app.get("/", (req, res) => {
 // routes
 app.use("/api/auth", authRoutes); // auth api's 
 app.use("/api/users", userRoutes) // user management api's
+app.use("/api/menu/categories", categoryRoutes) //category related api's
 
-app.use("/api/menu", menuRoutes)
-app.use("/api/category", categoryRoutes)
+app.use("/api/menu/items", menuRoutes) // menu card related api's
+
 app.use("/api/permissions", permissionRoutes)
 
 

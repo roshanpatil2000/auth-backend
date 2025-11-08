@@ -14,3 +14,12 @@ export const getMenuItems = async (req, res) => {
         return errorResponse(res, error.message, 500)
     }
 }
+
+export const addMenuItem = async (req, res) => {
+    const { name, price } = req.body
+    try {
+
+    } catch (error) {
+        return errorResponse(res, error.message, 500)
+    }
+}
