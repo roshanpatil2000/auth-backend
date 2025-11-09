@@ -1,10 +1,13 @@
 import express from "express";
 import { verifyToken } from "../middleware/verifyToken.js";
-import { addMenuItem, getMenuItems } from "../controllers/menu.controller.js";
+import { createMenuItem, deleteMenuItem, getAllMenuItems, getMenuItemByID, updateMenuItem } from "../controllers/menu.controller.js";
 
 
 const router = express.Router();
-router.get("/", getMenuItems);
-router.post("/add-item", addMenuItem)
+router.get("/", getAllMenuItems);
+router.post("/", createMenuItem)
+router.put("/:id", updateMenuItem)
+router.get("/:id", getMenuItemByID)
+router.delete("/:id", deleteMenuItem)
 
 export default router;
